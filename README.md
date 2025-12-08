@@ -30,7 +30,7 @@ Built as a solo coursework project, Mulevents focuses on realistic workflows, ro
 ---
 
 ## Demo (Under 5 Minutes)
-👉 **Watch here:** [![Mulevents Demo]([https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID](https://drive.google.com/file/d/1SyWidsaYHf2UVeQOanMCEWlTpYDcaBHL/view?usp=sharing))
+👉 **Watch here:** https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID](https://drive.google.com/file/d/1SyWidsaYHf2UVeQOanMCEWlTpYDcaBHL/view?usp=sharing
 
 
 *(Walkthrough of resident view, CA tools, event creation, and QR attendance)*

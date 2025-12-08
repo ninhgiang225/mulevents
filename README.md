@@ -33,8 +33,7 @@ Built as a solo coursework project, Mulevents focuses on realistic workflows, ro
 👉 **Watch here:** [![Mulevents Demo](<img width="1308" height="816" alt="thumbnail" src="https://github.com/user-attachments/assets/cfca1913-d960-42c2-8d65-eeea58d055d9" />
 )](https://drive.google.com/file/d/1SyWidsaYHf2UVeQOanMCEWlTpYDcaBHL/view?usp=sharing)
 
-
-
+<img width="1308" height="816" alt="thumbnail" src="https://github.com/user-attachments/assets/ac29736d-4c0e-45d8-846a-18a41fb59fb7" />
 
 
 *(Walkthrough of resident view, CA tools, event creation, and QR attendance)*
@@ -45,7 +44,7 @@ Built as a solo coursework project, Mulevents focuses on realistic workflows, ro
 - **Backend:** Python (Flask)  
 - **Frontend:** HTML, CSS, JavaScript  
 - **Database:** SQL (SQLite / PostgreSQL)  
-- **Integrations:** QR codes, Google Calendar  
+- **Integrations:** QR codes, Google Calendar, Mail  
 
 
 ---

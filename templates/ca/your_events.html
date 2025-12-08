@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Your Events{% endblock %}
+{% block content %}
+<h1 class="mb-3">Your Events</h1>
+<p class="text-muted mb-4">Track your past and upcoming events. Able you to edit, remove, promote and take attendance of each event </p>
+
+<h3>Upcoming events</h3>
+{% for event in upcoming_events %}
+  <div class="card event-card mb-3">
+    <div class="card-body d-flex">
+      <div>
+        <h4>{{ event.title }}</h4>
+        <div class="small text-muted">{{ event.start_time }} • {{ event.location }}</div>
+        <div class="mt-2">{{ event.description[:160] }}{% if event.description|length>160 %}...{% endif %}</div>
+        
+      </div>
+      <div class="ms-auto text-end">
+        <a class="btn btn-sm btn-canary" href="{{ url_for('main.your_event_detail', event_id=event.id) }}">View</a>
+        <a class="btn btn-sm btn-outline-secondary " href="{{ url_for('main.promote_event', event_id=event.id) }}">Promote</a>
+        <a class="btn btn-sm btn-outline-secondary " href="{{ url_for('main.edit_event', event_id=event.id) }}">Edit</a>
+        <form method="POST" class="confirm-delete" action="{{ url_for('main.delete_event', event_id=event.id) }}">
+          <button class="btn btn-sm btn-danger mt-3 ">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <p class="text-muted">No upcoming events.</p>
+{% endfor %}
+
+<hr>
+<h3>Ongoing & Past events</h3>
+{% for event in past_events %}
+  <div class="card event-card mb-3">
+    <div class="card-body d-flex">
+      <div>
+        <h4>{{ event.title }}</h4>
+        <div class="small text-muted">{{ event.start_time }} • {{ event.location }}</div>
+        <div class="mt-2">Attendance: {{event.attendance_count()}}</div>
+      </div>
+      <div class="ms-auto">
+        <a class="btn btn-sm btn-canary" href="{{ url_for('main.past_event_detail', event_id=event.id) }}">Take or Track Attendances</a>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <p class="text-muted">No past events.</p>
+{% endfor %}
+{% endblock %}

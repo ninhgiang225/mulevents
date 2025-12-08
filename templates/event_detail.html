@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ event.title }} - Mulevents{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-lg-10">
+    <div class="card event-card p-3">
+
+      <div class="row g-3 width-500z">
+        <!-- Left image -->
+        <div class="col-md-5 d-flex align-items-start">
+          {% if event.image_filename %}
+            <img src="{{ url_for('static', filename='images/' ~ event.image_filename) }}" class="img-fluid rounded" alt="{{ event.title }}" style="width:100%; height:auto; object-fit:cover;">
+          {% endif %}
+        </div>
+
+        <!-- Right details -->
+        <div class="col-md-7">
+          <h2>{{ event.title }}</h2>
+          <div class="small mb-2 pt-4">{{ event.event_type }} </div>
+          <div class="small mb-2">📍  {{ event.location }} </div>
+          <div class="small mb-2">🗓️  {{ event.start_time.strftime('%A') }} </div>
+          <div class="small mb-2">🕛  {{ event.start_time.strftime('%I:%M %p')}} - {{ event.end_time.strftime('%I:%M %p')}}</div>
+          
+          <p class="small mb-2 pt-4 pb-4">{{ event.description }}</p>
+          <p>
+            <strong>Hosted by:</strong> {{ event.host_ca.name }} — {{ event.host_ca.building }}
+            {% if event.collab_ca %} & {{ event.collab_ca.name }} - — {{ event.collab_ca.building }}{% endif %}
+          </p>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a class="btn btn-primary" href="{{ url_for('main.download_ics', event_id=event.id) }}">
+              <i class="bi bi-calendar-plus me-1"></i> Add to calendar
+            </a>
+            <a class="btn btn-outline-secondary" href="{{ url_for('main.refer_friend', event_id=event.id) }}">
+              <i class="bi bi-envelope me-1"></i> Refer to a friend
+            </a>
+            <a class="btn btn-canary" href="{{ url_for('main.contact_ca', event_id=event.id) }}">
+              <i class="bi bi-chat-dots me-1"></i> Message CA
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

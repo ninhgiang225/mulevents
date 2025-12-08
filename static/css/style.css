@@ -1,0 +1,12 @@
+:root { --bluebird:#0b5fb6; --canary:#FFD700; --muted:#eff1f3; }
+body { font-family: Lucida Console, system-ui, Arial; background:var(--muted); color:#111827; }
+.navbar { background-color: white !important;  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+.navbar .navbar-brand{color: black; font-weight: bold; }
+.navbar .nav-link { color: #111827 !important; font-weight: 500;}
+.navbar .nav-link:hover {color: #0056b3 !important;}
+.navbar .nav-link.active { color: #003366 !important;  font-weight: 600; }
+.event-card { background:#fff; border-radius:12px; padding:16px; box-shadow:0 6px 18px rgba(15,23,42,0.06); margin-bottom:18px;}
+.btn-canary { background:var(--canary); color:#111; border:none; }
+.btn-canary:hover { background:#e6c800; }
+.qr-image { max-width:200px; }
+.small-muted { color:#9fa3aa; }

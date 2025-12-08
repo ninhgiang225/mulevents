@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Feed - Mulevents{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-3">News Feed</h1>
+<p class="text-muted mb-4">View all upcoming events hosted by Colby CAs.</p>
+
+<div id="raw-events" style="display:none;">
+  {% for event in events %}
+    <div class="event-item"
+         data-date="{{ event.start_time.strftime('%Y-%m-%d') }}"
+         data-dateshorten="{{ event.start_time.strftime('%b %d') }}"
+         data-day="{{ event.start_time.strftime('%A')}}"
+         data-time="{{ event.start_time.strftime('%I:%M %p')}}"
+         data-endtime="{{ event.end_time.strftime('%I:%M %p')}}"
+         data-id="{{ event.id }}"
+         data-title="{{ event.title|e }}"
+         data-description="{{ event.description|e }}"
+         data-type="{{ event.event_type|e }}"
+         data-host="{{ event.host_ca.name if event.host_ca else '' }}"
+         data-host-building="{{ event.host_ca.building if event.host_ca else '' }}"
+         data-location="{{ event.location|e }}"
+         data-start="{{ event.start_time }}"
+         data-end="{{ event.end_time }}"
+         data-image="{% if event.image_filename %}{{ url_for('static', filename='images/' ~ event.image_filename) }}{% else %}{% endif %}"
+         data-attendance="{{ event.attendance_count() if event.attendance_count is defined else (event.attendance if event.attendance is defined else 0) }}"
+    ></div>
+  {% endfor %}
+</div>
+
+<div id="events-accordion" class="accordion"></div>
+
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const raw = document.querySelectorAll('#raw-events .event-item');
+    const grouped = {};
+    const today = new Date();
+  
+    raw.forEach(el => {
+      const eventDate = new Date(el.dataset.date);
+  
+      // ONLY upcoming or today
+      if (eventDate < today.setHours(0, 0, 0, 0)) {
+        return;  // skip past events
+      }
+  
+      // Calculate week start (Monday)
+      let weekStart = new Date(eventDate);
+      const day = weekStart.getDay(); // Sunday=0, Monday=1
+      const diff = weekStart.getDate() - day + (day === 0 ? -6 : 1);
+      weekStart.setDate(diff);
+  
+      // Make readable label: "Week of Jan 20"
+      const label = `Week of ${weekStart.toLocaleString('default', { month: 'short' })} ${weekStart.getDate()}`;
+  
+      if (!grouped[label]) grouped[label] = [];
+      grouped[label].push(el.dataset);
+    });
+  
+    const acc = document.getElementById('events-accordion');
+    const weeks = Object.keys(grouped);
+  
+    if (weeks.length === 0) {
+      acc.innerHTML = '<div class="text-muted">No upcoming events.</div>';
+      return;
+    }
+  
+    // Sort by week start date
+    weeks.sort((a, b) => {
+      return new Date(a.replace("Week of ", "")) - new Date(b.replace("Week of ", ""));
+    });
+  
+    weeks.forEach((week, idx) => {
+      const items = grouped[week];
+      let cardsHtml = '';
+  
+      items.forEach(item => {
+        cardsHtml += `
+          <div class="col-md-4">
+            <div class="card h-100">
+              ${item.image 
+                ? `<img src="${item.image}" class="card-img-top" style="object-fit:cover; height:500px;">` 
+                : `<div class="bg-light d-flex align-items-center justify-content-center">
+                     <i class="bi bi-calendar-event fs-1 text-muted"></i>
+                   </div>`}
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">${item.title}</h5>
+                <p class="card-text text-truncate text-muted">${item.description}</p>
+                <div class="mt-auto">
+                  <div class="small mb-2">${item.type} </div>
+                  <div class="small mb-2"> 📍 ${item.location}</div>
+                  <div class="small mb-2">🗓️ ${item.day} • ${item.dateshorten} </div>
+                  <div class="small mb-2"> 🕛 ${item.time} - ${item.endtime}</div>
+                  <a href="/event/${item.id}" class="btn btn-canary btn-sm me-2 d-block mx-auto">View</a>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      });
+  
+      acc.insertAdjacentHTML('beforeend', `
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading-${idx}">
+            <button class="accordion-button ${idx ? 'collapsed' : ''}" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapse-${idx}"
+                    aria-expanded="${idx === 0}">
+              ${week} (${items.length} event${items.length > 1 ? 's' : ''})
+            </button>
+          </h2>
+          <div id="collapse-${idx}" class="accordion-collapse collapse ${idx === 0 ? 'show' : ''}">
+            <div class="accordion-body py-3">
+              <div class="row g-3">${cardsHtml}</div>
+            </div>
+          </div>
+        </div>
+      `);
+    });
+  });
+  </script>
+  
+{% endblock %}

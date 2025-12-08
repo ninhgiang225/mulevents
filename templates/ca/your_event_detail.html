@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ event.title }}{% endblock %}
+{% block content %}
+
+<div class="card event-card">
+  <div class="card-body d-flex">
+    <div>
+      <h3>{{ event.title }}</h3>
+      <div class="small mb-2 pt-4">{{ event.event_type }} </div>
+      <div class="small mb-2">📍  {{ event.location }} </div>
+      <div class="small mb-2">🗓️  {{ event.start_time.strftime('%A') }} </div>
+      <div class="small mb-2">🕛  {{ event.start_time.strftime('%I:%M %p')}} - {{ event.end_time.strftime('%I:%M %p')}}</div>
+      <p class="mt-3">{{ event.description }}</p>
+    </div>
+
+    <div class="ms-auto text-end">
+      <a class="btn btn-canary mb-2" href="{{ url_for('main.promote_event', event_id=event.id) }}">Promote event</a>
+      <a class="btn btn-canary mb-2" href="{{ url_for('main.edit_event', event_id=event.id) }}">Edit event</a>
+      <form method="POST" class="confirm-delete" action="{{ url_for('main.delete_event', event_id=event.id) }}">
+        <button class="btn btn-danger mb-2">Remove event</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

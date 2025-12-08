@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Edit Event{% endblock %}
+
+{% block content %}
+
+<h1 class="mb-3">Edit Event</h1>
+<p class="text-muted mb-4">Update the details of your event below.</p>
+
+<div class="col-lg-8 mx-auto">
+  <div class="card event-card p-4">
+    <form method="POST" action="{{ url_for('main.edit_event', event_id=event.id) }}" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+
+      <!-- Event Title -->
+      <div class="form-label fw-semibold pb-2">
+        {{ form.title.label }}
+        {{ form.title(class="form-control", value=form.title.data or event.title) }}
+      </div>
+
+      <!-- Description -->
+      <div class="form-label fw-semibold pb-2">
+        {{ form.description.label }}
+        {{ form.description(class="form-control", rows=4) }}
+      </div>
+
+      <!-- Event Type & Collaborating CA -->
+      <div class="row">
+        <div class="col-md-6 form-label fw-semibold pb-2">
+          {{ form.event_type.label }}
+          {{ form.event_type(class="form-select", value=form.event_type.data or event.event_type) }}
+        </div>
+        <div class="col-md-6 form-label fw-semibold pb-2">
+          {{ form.collab_ca.label }}
+          {{ form.collab_ca(class="form-select", value=form.collab_ca.data or (event.collab_ca_id if event.collab_ca_id else 0)) }}
+        </div>
+      </div>
+
+      <!-- Location -->
+      <div class="form-label fw-semibold pb-2">
+        {{ form.location.label }}
+        {{ form.location(class="form-control", value=form.location.data or event.location) }}
+      </div>
+
+      <!-- Start & End DateTime -->
+      <div class="row">
+        <div class="col-md-6 form-label fw-semibold pb-2">
+            <label>Start (date & time)</label>
+            <input type="datetime-local" name="start_time" class="form-control"
+                   value="{{ event.start_time.strftime('%Y-%m-%dT%H:%M') }}" required>
+        </div>
+        <div class="col-md-6 form-label fw-semibold pb-2">
+            <label>End (date & time)</label>
+            <input type="datetime-local" name="end_time" class="form-control"
+                    value="{{ event.end_time.strftime('%Y-%m-%dT%H:%M') }}" required>
+        </div>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="form-label fw-semibold pb-2">
+        {{ form.image.label }}
+        {{ form.image(class="form-control") }}
+        {% if event.image_filename %}
+          <small class="text-muted">Current image: {{ event.image_filename }}</small>
+        {% endif %}
+        <small class="text-muted d-block">Accepted formats: PNG, JPG, JPEG, GIF, WEBP (Max 16MB)</small>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-grid pt-4">
+        <button type="submit" class="btn btn-canary">Update Event</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

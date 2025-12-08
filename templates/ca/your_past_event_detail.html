@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ event.title }} — Past Event{% endblock %}
+
+{% block content %}
+
+<div class="card event-card">
+  <div class="card-body d-flex">
+    
+    <div>
+      <h3 class="mb-2">{{ event.title }}</h3>
+
+      <div class="small text-muted">{{ event.start_time.strftime('%b %d, %Y – %I:%M %p') }} - {{ event.end_time.strftime('%I:%M %p') }}</div>
+      <div class="small text-muted">{{ event.location }}</div>
+
+      <p class="mt-3">{{ event.description }}</p>
+
+      <p>
+        <strong>Hosted by:</strong> {{ event.host_ca.name }}
+        {% if event.collab_ca %}
+          and {{ event.collab_ca.name }}
+        {% endif %}
+      </p>
+
+      <p class="mt-4">
+        <strong>Total Attendance:</strong> {{ event.attendance_count() }}
+      </p>
+
+      <h6 class="mt-3">Attendance Log:</h6>
+      <ul class="list-group mt-2">
+        {% for a in event.attendances %}
+          <li class="list-group-item d-flex justify-content-between">
+            {{ a.user_email }}
+            <span class="text-muted small">{{ a.timestamp.strftime('%b %d, %I:%M %p') }}</span>
+          </li>
+        {% else %}
+          <li class="list-group-item text-muted">No attendance records.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="ms-auto text-end">
+
+      <div>
+        <img src="{{ url_for('static', filename='qrcodes/event_' ~ event.id ~ '.png') }}"
+             class="qr-image mt-2" alt="QR">
+      </div>
+
+      <p class="text-muted small mt-2">
+        Note: The QR code is used for event check-ins. Check-ins are only allowed during the event and duplicate check-ins are not permitted.
+      </p>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

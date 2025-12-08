@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}GOAT Events - Mulevents{% endblock %}
+
+{% block content %}
+<h1 class="mb-3">GOAT Events 🎉 🍻</h1>
+<p class="text-muted mb-4">Let celabrate top 5 most successful events of this and last month! </p>
+
+<div class="mb-4">
+  <a href="{{ url_for('main.peak_events', month='this') }}" class="btn {% if selected_month=='this' %}btn-canary{% else %}btn-outline-secondary{% endif %}">
+    This Month
+  </a>
+  <a href="{{ url_for('main.peak_events', month='last') }}" class="btn {% if selected_month=='last' %}btn-canary{% else %}btn-outline-secondary{% endif %}">
+    Last Month
+  </a>
+</div>
+
+<div class="row">
+  {% for e in top_events %}
+    <div class="col-md-4">
+      <article class="card event-card">
+        <div class="card-body">
+          <h4 class="mb-3">No. {{ loop.index }} : {{ e.title }}</h4>
+          <div class=" mb-4 mb-2"> 🎉 Congrats CA {{ e.host_ca.name }} of {{ e.host_ca.building }}</div>
+          <p class="mb-2 text-muted">Event description: {{ e.description[:140] }}{% if e.description|length > 140 %}...{% endif %}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>Attendance: <strong>{{ e.attendance_count() }}</strong></div>
+          </div>
+        </div>
+      </article>
+    </div>
+  {% else %}
+    <p class="text-muted">No top events yet.</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

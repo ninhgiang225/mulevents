@@ -44,7 +44,9 @@ Built as a solo coursework project, Mulevents focuses on realistic workflows, ro
 - **Backend:** Python (Flask)  
 - **Frontend:** HTML, CSS, JavaScript  
 - **Database:** SQL (SQLite / PostgreSQL)  
-- **Integrations:** QR codes, Google Calendar, Mail  
+- **Integrations:** QR codes, Google Calendar, Mail
+- **Testing:** Pytest
+- **Deployment:** Heroku
 
 
 ---
